@@ -7,14 +7,14 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from bg-blue-600 to bg-purple-600 min-h-screen py-8 px-4">
+<body class="bg-gradient-to-r from bg-blue-600 to bg-purple-600 min-h-screen py-8 px-4 " >
 
 <div class="flex flex-col max-w-4xl  mx-auto  p-6 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl ">
 
     <div class =" bg-white/80 min-w-full backdrop-blur-xl rounded-3xl shadow-2xl p-4 h-32 my-4 ">
-     <div class="flex gap-2 justify-around p-4 rounded-2xl"> 
+     <div class="flex gap-2 justify-around p-4 rounded-2xl  "> 
         <div class="text-center">
-        <h3 class ="text-lg font-semibold text-gray-700">Total Income</h3>
+        <h3 class ="text-lg font-semibold text-gray-700 ">Total Income</h3>
          <p id="totalIncome" class="text-3xl font-bold text-green-600">₹0</p>
         </div>
         <div class="text-center">
@@ -27,18 +27,18 @@
         </div>
      </div>
     </div>
-   <div class="bg-white p-4  min-w-full  mx-auto    rounded-2xl shadow-lg my-4">
+   <div class="bg-white p-4  min-w-full  mx-auto  rounded-2xl shadow-lg my-4 ">
         <h3 class="text-2xl font-bold text-center mb-6 text-gray-80">Add Transaction</h3>
-        <div class="grid grid-cols-3 grid-rows-1 gap-3 m-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 m-2">
         <div >
         <label class="block text-sm font-medium text-gray-700 ml-3 mb-2">Description</label>
-        <input type="text" placeholder="eg Income"  id ="description" class ="border m-2 border-gray-300 rounded-lg p-3"> 
+        <input type="text" placeholder="eg Income"  id ="description" class ="border border-gray-300  rounded-lg p-3  "> 
         </div>
        <div >
        <label class="block text-sm font-medium text-gray-700 ml-3 mb-2">Amount</label>
-       <input type="text" placeholder="1000" id="amount" class ="border m-2 border-gray-300 rounded-lg p-3"> 
+       <input type="text" placeholder="1000" id="amount" class ="border  border-gray-300  rounded-lg p-3  "> 
         </div>
-     <div class="flex flex-col gap-4 items-end sm:flex-row gap m-2">
+     <div class="flex  gap-2 items-end md:flex items-start  justify-start">  
        <div><input type="radio" name="type"  id="income" class="rounded"><span>Income</span></div> 
         <div> <input type="radio" name="type" id="Expense" class="rounded"><span>Expense</span></div> 
        <div>  <input type="radio" name="type"  id="all" class="rounded"><span>All</span></div> 
