@@ -1,10 +1,9 @@
-
 let transactions = [];
 let editingId = null; 
 
-
 const descriptionInput = document.getElementById('description');
 const amountInput = document.getElementById('amount');
+const transactionType = document.getElementById('transactionType');  // NEW: Dropdown
 const incomeBtn = document.getElementById('income');
 const expenseBtn = document.getElementById('Expense');
 const allBtn = document.getElementById('all');
@@ -15,7 +14,6 @@ const totalIncome = document.getElementById('totalIncome');
 const totalExpense = document.getElementById('totalExpense');
 const balance = document.getElementById('netBalance');
 
-
 function loadData() {
     const savedData = localStorage.getItem('myTransactions');
     if (savedData !== null) {
@@ -23,34 +21,29 @@ function loadData() {
     }
 }
 
-
 function saveData() {
     localStorage.setItem('myTransactions', JSON.stringify(transactions));
 }
 
-
 function updateTotals() {
     let incomeTotal = 0;
     let expenseTotal = 0;
-    
     
     for (let i = 0; i < transactions.length; i++) {
         let transaction = transactions[i];
         if (transaction.type === 'income') {
             incomeTotal = incomeTotal + transaction.amount;
         } else if (transaction.type === 'expense') {
-            expenseTotal = expenseTotal + Math.abs(transaction.amount); ;
+            expenseTotal = expenseTotal + Math.abs(transaction.amount);
         }
     }
-    
 
-    totalIncome.textContent = '₹' + incomeTotal
-    totalExpense.textContent = '₹' + expenseTotal
+    totalIncome.textContent = '₹' + incomeTotal.toLocaleString();
+    totalExpense.textContent = '₹' + expenseTotal.toLocaleString();
     
     let netBalance = incomeTotal - expenseTotal;
-    balance.textContent = '₹' + netBalance
+    balance.textContent = '₹' + netBalance.toLocaleString();
     
-  
     if (netBalance >= 0) {
         balance.className = 'text-3xl font-bold text-green-600';
     } else {
@@ -58,12 +51,9 @@ function updateTotals() {
     }
 }
 
-
 function showTransactions() {
-    
     listArea.innerHTML = '';
     
-   
     let show = 'all';
     if (incomeBtn.checked === true) {
         show = 'income';
@@ -73,11 +63,9 @@ function showTransactions() {
     
     let hasItems = false;
     
-   
     for (let i = 0; i < transactions.length; i++) {
         let transaction = transactions[i];
         
-      
         if (show !== 'all' && transaction.type !== show) {
             continue;
         }
@@ -86,20 +74,18 @@ function showTransactions() {
         
         let listItem = document.createElement('li');
         
-     
         let amountSign;
         let amountColor;
         if (transaction.type === 'income') {
             amountSign = '+';
             amountColor = 'text-green-600';
-            listItem.className = 'p-6 flex justify-between items-center hover:bg-gray-50 rounded-xl  border-l-4 bg-green-50 border-green-500';
+            listItem.className = 'p-6 flex justify-between items-center hover:bg-gray-50 rounded-xl border-l-4 bg-green-50 border-green-500';
         } else {
             amountSign = '-';
             amountColor = 'text-red-600';
-            listItem.className = 'p-6 flex justify-between items-center hover:bg-gray-50 rounded-xl  border-l-4 bg-red-50 border-red-500';
+            listItem.className = 'p-6 flex justify-between items-center hover:bg-gray-50 rounded-xl border-l-4 bg-red-50 border-red-500';
         }
         
-       
         listItem.innerHTML = `
             <div class="flex-1">
                 <h4 class="font-bold text-xl mb-1">${transaction.description}</h4>
@@ -125,32 +111,24 @@ function showTransactions() {
         listArea.appendChild(listItem);
     }
     
-    
+    if (!hasItems) {
+        listArea.innerHTML = '<li class="text-center text-gray-500 py-12 text-lg">No transactions found</li>';
+    }
 }
-
 
 function addOrUpdate() {
     let description = descriptionInput.value.trim();
     let amount = parseFloat(amountInput.value);
+    let type = transactionType.value;  // CHANGED: Use dropdown value
     
-    
-    let type = 'income';
-    if (incomeBtn.checked === true) {
-        type = 'income';
-    } else if (expenseBtn.checked === true) {
-        type = 'expense';
-    }
-    
-    
-    if (description === '' || isNaN(amount) || amount <= 0) {
-        alert('Please fill description and valid amount!');
+    if (description === '' || type === '' || isNaN(amount) || amount <= 0) {
+        alert('Please fill all fields with valid data!');
         return;
     }
     
     let finalAmount = type === 'income' ? amount : -amount;
     
     if (editingId !== null) {
-       
         for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].id === editingId) {
                 transactions[i].description = description;
@@ -162,7 +140,6 @@ function addOrUpdate() {
         editingId = null;
         addButton.textContent = 'Add Transaction';
     } else {
-      
         transactions.push({
             id: Date.now(),
             description: description,
@@ -172,13 +149,11 @@ function addOrUpdate() {
         });
     }
     
-   
     clearForm();
     saveData();
     updateTotals();
     showTransactions();
 }
-
 
 function editItem(id) {
     for (let i = 0; i < transactions.length; i++) {
@@ -186,12 +161,7 @@ function editItem(id) {
             let item = transactions[i];
             descriptionInput.value = item.description;
             amountInput.value = Math.abs(item.amount);
-            
-            if (item.type === 'income') {
-                incomeBtn.checked = true;
-            } else {
-                expenseBtn.checked = true;
-            }
+            transactionType.value = item.type;  // CHANGED: Set dropdown
             
             editingId = id;
             addButton.textContent = 'Update Transaction';
@@ -200,7 +170,6 @@ function editItem(id) {
         }
     }
 }
-
 
 function deleteItem(id) {
     if (confirm('Are you sure? This cannot be undone.')) {
@@ -216,16 +185,15 @@ function deleteItem(id) {
     }
 }
 
-
 function clearForm() {
     descriptionInput.value = '';
     amountInput.value = '';
+    transactionType.value = '';  // CHANGED: Clear dropdown
     allBtn.checked = true;
     editingId = null;
     addButton.textContent = 'Add Transaction';
     descriptionInput.focus();
-}
-
+}   
 
 function connectFilters() {
     incomeBtn.addEventListener('change', showTransactions);
@@ -233,14 +201,12 @@ function connectFilters() {
     allBtn.addEventListener('change', showTransactions);
 }
 
-
+// Event listeners
 addButton.addEventListener('click', addOrUpdate);
 resetButton.addEventListener('click', clearForm);
 
-
-
-    loadData();
-    connectFilters();
-    updateTotals();
-    showTransactions();
-
+// Initialize
+loadData();
+connectFilters();
+updateTotals();
+showTransactions();
