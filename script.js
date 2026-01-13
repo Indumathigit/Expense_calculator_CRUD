@@ -3,7 +3,7 @@ let editingId = null;
 
 const descriptionInput = document.getElementById('description');
 const amountInput = document.getElementById('amount');
-const transactionType = document.getElementById('transactionType');  // NEW: Dropdown
+const transactionType = document.getElementById('transactionType'); 
 const incomeBtn = document.getElementById('income');
 const expenseBtn = document.getElementById('Expense');
 const allBtn = document.getElementById('all');
@@ -119,7 +119,7 @@ function showTransactions() {
 function addOrUpdate() {
     let description = descriptionInput.value.trim();
     let amount = parseFloat(amountInput.value);
-    let type = transactionType.value;  // CHANGED: Use dropdown value
+    let type = transactionType.value;  
     
     if (description === '' || type === '' || isNaN(amount) || amount <= 0) {
         alert('Please fill all fields with valid data!');
@@ -161,7 +161,7 @@ function editItem(id) {
             let item = transactions[i];
             descriptionInput.value = item.description;
             amountInput.value = Math.abs(item.amount);
-            transactionType.value = item.type;  // CHANGED: Set dropdown
+            transactionType.value = item.type;  
             
             editingId = id;
             addButton.textContent = 'Update Transaction';
@@ -172,7 +172,7 @@ function editItem(id) {
 }
 
 function deleteItem(id) {
-    if (confirm('Are you sure? This cannot be undone.')) {
+    if (confirm('Are you sure? ')) {
         for (let i = 0; i < transactions.length; i++) {
             if (transactions[i].id === id) {
                 transactions.splice(i, 1);
@@ -188,7 +188,7 @@ function deleteItem(id) {
 function clearForm() {
     descriptionInput.value = '';
     amountInput.value = '';
-    transactionType.value = '';  // CHANGED: Clear dropdown
+    transactionType.value = '';  
     allBtn.checked = true;
     editingId = null;
     addButton.textContent = 'Add Transaction';
@@ -201,11 +201,11 @@ function connectFilters() {
     allBtn.addEventListener('change', showTransactions);
 }
 
-// Event listeners
+
 addButton.addEventListener('click', addOrUpdate);
 resetButton.addEventListener('click', clearForm);
 
-// Initialize
+
 loadData();
 connectFilters();
 updateTotals();
